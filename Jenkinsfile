@@ -9,12 +9,12 @@ pipeline{
     stages{
         stage('Git-checkout'){
             steps{
-                git branch: 'dev' , url: 'https://github.com/manjukolkar/web-application.git'
+                git branch: 'dev' , url: 'https://github.com/deadboltt/CIProject.git'
             }
         }
         stage('Code Compile'){
             steps{
-                sh 'mvn compile'
+                sh 'mvn compile -Dmaven.compiler.source=11 -Dmaven.compiler.target=11'
             }
         }
         stage('Code Package'){
@@ -24,13 +24,13 @@ pipeline{
         }
         stage('Build and tag'){
             steps{
-                sh 'docker build -t manjukolkar007/project-1 .'
+                sh 'docker build -t deadbolttt/project-1 .'
             }
         }
         stage('Containerisation'){
             steps{
                 sh '''
-                docker run -it -d --name c8 -p 9008:8080 manjukolkar007/project-1
+                docker run -it -d --name c8 -p 9008:8080 deadbolttt/project-1
                 '''
             }
         }
@@ -45,7 +45,7 @@ pipeline{
         }
          stage('Pushing image to repository'){
             steps{
-                sh 'docker push manjukolkar007/project-1'
+                sh 'docker push deadbolttt/project-1'
             }
         }
         
