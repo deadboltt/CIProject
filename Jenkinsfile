@@ -24,15 +24,19 @@ pipeline{
         }
         stage('Build and tag'){
             steps{
-                sh 'docker build -t deadbolttt/project-2 .'
+                sh 'docker build -t deadbolttt/project-1 .'
             }
         }
         stage('Containerisation'){
-            steps{
-                sh '''
-                docker run -it -d --name c8 -p 9008:8080 deadbolttt/project-2
-                '''
-            }
+            stage('Containerisation') {
+    steps {
+        sh '''
+            docker stop c8 || true
+            docker rm c8 || true
+            docker run -d --name c8 -p 9008:8080 deadbolttt/project-1
+        '''
+    }
+}
         }
         stage('Login to Docker Hub') {
                     steps {
@@ -45,7 +49,7 @@ pipeline{
         }
          stage('Pushing image to repository'){
             steps{
-                sh 'docker push deadbolttt/project-2'
+                sh 'docker push deadbolttt/project-1'
             }
         }
         
